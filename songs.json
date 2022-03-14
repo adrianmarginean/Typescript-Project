@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Scar Tissue",
+    "duration": 4,
+    "genre": "Rock",
+    "noOfListeners": 20,
+    "artistId": 1,
+    "id": 1
+  },
+  {
+    "name": "Tusa",
+    "duration": 4,
+    "genre": "PopLatino",
+    "noOfListeners": 5,
+    "artistId": 2,
+    "id": 3
+  },
+  {
+    "name": "Tusa",
+    "duration": 4,
+    "genre": "Latino",
+    "noOfListeners": 5,
+    "artistId": 1,
+    "id": 4
+  },
+  {
+    "name": "Tusa",
+    "duration": 4,
+    "genre": "Latino",
+    "noOfListeners": 5,
+    "artistId": 4,
+    "id": 5
+  },
+  {
+    "name": "Tusa",
+    "duration": 4,
+    "genre": "Latino",
+    "noOfListeners": 5,
+    "artistId": 2,
+    "id": 6
+  },
+  {
+    "name": "Tusa",
+    "duration": 4,
+    "genre": "Latino",
+    "noOfListeners": 5,
+    "artistId": 3,
+    "id": 7
+  },
+  {
+    "name": "Tusa",
+    "duration": 4,
+    "genre": "Latino",
+    "noOfListeners": 5,
+    "artistId": 1,
+    "id": 8
+  }
+]
