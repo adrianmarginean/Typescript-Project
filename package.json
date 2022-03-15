@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "sda",
   "main": "index.js",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node build/Test.js"
+    "start": "tsc && node build/index.js"
   },
   "author": "",
   "license": "ISC",

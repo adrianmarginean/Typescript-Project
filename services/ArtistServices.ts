@@ -5,5 +5,5 @@ export class ArtistServices extends EntityService<Artist>{
     getFileName(): string {
        return 'artists.json'
     }
-    
+
 }
