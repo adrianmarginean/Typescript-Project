@@ -14,6 +14,9 @@ class SongRoutes {
     initializeRoutes() {
         this.router.route('/').get(this.songController.getAllSongs);
         this.router.route('/:id').get(this.songController.getSongById);
+        this.router.route('/add').post(this.songController.addNewSong);
+        this.router.route('/update/:id').put(this.songController.updateSong);
+        this.router.route('/delete/:id').delete(this.songController.deleteSong);
     }
 }
 exports.default = new SongRoutes().router;

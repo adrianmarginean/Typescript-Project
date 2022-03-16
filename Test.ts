@@ -1,9 +1,9 @@
-import {ArtistServices } from "./services/ArtistServices";
-import {Artist  } from "./models/Artist";
-import { Playlist } from "./models/Playlist";
-import { PlaylistServices } from "./services/PlaylistServices";
-import { SongServices } from "./services/SongServices";
-import { Song } from "./models/Song";
+import {ArtistServices } from "./src/services/ArtistServices";
+import {Artist  } from "./src/models/Artist";
+import { Playlist } from "./src/models/Playlist";
+import { PlaylistServices } from "./src/services/PlaylistServices";
+import { SongServices } from "./src/services/SongServices";
+import { Song } from "./src/models/Song";
 
 
 //Artist CRUD

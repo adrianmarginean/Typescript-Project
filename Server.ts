@@ -1,5 +1,5 @@
 import express, { Application } from "express";
-import Routes from "./routes/Routes";
+import Routes from "./src/routes/Routes";
 
 export default class Server{
     constructor(app: Application){

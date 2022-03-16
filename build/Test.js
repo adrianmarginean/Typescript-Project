@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ArtistServices_1 = require("./services/ArtistServices");
-const PlaylistServices_1 = require("./services/PlaylistServices");
-const SongServices_1 = require("./services/SongServices");
+const ArtistServices_1 = require("./src/services/ArtistServices");
+const PlaylistServices_1 = require("./src/services/PlaylistServices");
+const SongServices_1 = require("./src/services/SongServices");
 //Artist CRUD
 let testArtist = new ArtistServices_1.ArtistServices();
 let newArtist = { age: 21, name: "Anamaria" };

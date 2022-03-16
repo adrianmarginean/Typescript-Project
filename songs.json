@@ -48,11 +48,11 @@
     "id": 7
   },
   {
-    "name": "Tusa",
+    "name": "Test -ADD",
     "duration": 4,
-    "genre": "Latino",
-    "noOfListeners": 5,
+    "genre": "Rock",
+    "noOfListeners": 20,
     "artistId": 1,
-    "id": 8
+    "id": 9
   }
 ]
