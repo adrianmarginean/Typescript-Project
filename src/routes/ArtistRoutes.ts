@@ -3,18 +3,17 @@ import ArtistController from '../controllers/ArtistController';
 
 class ArtistRoutes {
     router = Router();
-    artistController = new ArtistController();
 
     constructor(){
         this.initializeRoutes();
     }
 
     initializeRoutes() {
-        this.router.route('/').get(this.artistController.getAllArtists);
-        this.router.route('/:id').get(this.artistController.getArtistById);
-        this.router.route('/add').post(this.artistController.addNewArtist);
-        this.router.route('/update/:id').put(this.artistController.updateArtist);
-        this.router.route('/delete/:id').delete(this.artistController.deleteArtist);
+        this.router.route('/').get(ArtistController.getAllArtists);
+        this.router.route('/:id').get(ArtistController.getArtistById);
+        this.router.route('/add').post(ArtistController.createArtist);
+        this.router.route('/update/:id').put(ArtistController.updateArtist);
+        this.router.route('/delete/:id').delete(ArtistController.deleteArtist);
     }
 }
 export default new ArtistRoutes().router;

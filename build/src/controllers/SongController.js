@@ -1,80 +1,149 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const SongServices_1 = require("../services/SongServices");
-const errorHandler_1 = require("../handlers/errorHandler");
-class SongController {
-    getAllSongs(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let songService = new SongServices_1.SongServices;
-                const songsList = yield songService.getAll();
-                res.status(200).json(songsList);
-            }
-            catch (error) {
-                (0, errorHandler_1.apiErrorHandler)(error, req, res, 'Fetch All Songs failed.');
-            }
+const mongoose_1 = __importDefault(require("mongoose"));
+const Song_1 = __importDefault(require("../models/Song"));
+// export default class SongController{
+//     async getAllSongs(req: Request, res: Response, nextFunction: NextFunction){
+//         try{
+//             let songService: SongServices= new SongServices;
+//             const songsList:Song[] =  await songService.getAll();
+//             res.status(200).json(songsList);
+//         }catch(error){
+//             apiErrorHandler(error, req, res, 'Fetch All Songs failed.');
+//         }
+//     }
+//     async getSongById(req:Request<{id: string}, {}, {}, {}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             let songService: SongServices= new SongServices;
+//             const song:Song =  await songService.getById(Number(req.params.id));
+//             res.status(200).json(song);
+//         }catch(error){
+//             res.status(404).json(apiErrorHandler(error, req, res, `Could not  find song whit id ${req.params.id}`));
+//         }
+//     }
+//     async addNewSong(req:Request<{},{},{name:string, duration:string, genre:string, noOfListeners:string, artistId:string},{}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             const{name, duration, genre, noOfListeners, artistId} = req.body;
+//             let songService: SongServices= new SongServices;
+//             let newSong:Song = {name:name,duration:Number(duration),genre:genre,noOfListeners:Number(noOfListeners),artistId:Number(artistId)}
+//             const song:Song = await songService.add(newSong);
+//             res.status(200).json(song);
+//         }catch(error){
+//             apiErrorHandler(error, req, res, "Cannot add the new song");
+//         }
+//     }
+//     async updateSong(req:Request<{id: string},{},{name:string, duration:string, genre:string, noOfListeners:string, artistId:string},{}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             const{name, duration, genre, noOfListeners, artistId} = req.body
+//             let songService: SongServices= new SongServices;
+//             let updateSong:Song = {id:Number(req.params.id),name:name,duration:Number(duration),genre:genre,noOfListeners:Number(noOfListeners),artistId:Number(artistId)}
+//             const song:Song = await songService.update(updateSong);
+//             res.status(200).json(song);
+//         }catch(error){
+//             res.status(404).json(apiErrorHandler(error, req, res, `Could not  find artist whit id ${req.params.id}`));
+//         }
+//     }
+//     async deleteSong(req:Request<{id: string}, {}, {}, {}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             let songService: SongServices= new SongServices;
+//             const result: boolean = await songService.delete(Number(req.params.id));
+//             res.status(200).json(result)
+//         }catch(error){
+//             res.status(404).json(apiErrorHandler(error, req, res, `Cannot delete the song with id ${req.params.id}`));
+//         }
+//     }
+// }
+const createSong = (req, res, nextFunction) => {
+    let { name, duration, genre, noOfListeners, artistId } = req.body;
+    const song = new Song_1.default({
+        _id: new mongoose_1.default.Types.ObjectId(),
+        name,
+        duration,
+        genre,
+        noOfListeners,
+        artistId
+    });
+    return song
+        .save()
+        .then((song) => {
+        return res.status(201).json({
+            song: song
         });
-    }
-    getSongById(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let songService = new SongServices_1.SongServices;
-                const song = yield songService.getById(Number(req.params.id));
-                res.status(200).json(song);
-            }
-            catch (error) {
-                res.status(404).json((0, errorHandler_1.apiErrorHandler)(error, req, res, `Could not  find song whit id ${req.params.id}`));
-            }
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
         });
-    }
-    addNewSong(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { name, duration, genre, noOfListeners, artistId } = req.body;
-                let songService = new SongServices_1.SongServices;
-                let newSong = { name: name, duration: Number(duration), genre: genre, noOfListeners: Number(noOfListeners), artistId: Number(artistId) };
-                const song = yield songService.add(newSong);
-                res.status(200).json(song);
-            }
-            catch (error) {
-                (0, errorHandler_1.apiErrorHandler)(error, req, res, "Cannot add the new song");
-            }
+    });
+};
+const getAllSongs = (req, res, next) => {
+    Song_1.default.find()
+        .exec()
+        .then((songs) => {
+        return res.status(200).json({
+            songs: songs,
+            count: songs.length
         });
-    }
-    updateSong(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { name, duration, genre, noOfListeners, artistId } = req.body;
-                let songService = new SongServices_1.SongServices;
-                let updateSong = { id: Number(req.params.id), name: name, duration: Number(duration), genre: genre, noOfListeners: Number(noOfListeners), artistId: Number(artistId) };
-                const song = yield songService.update(updateSong);
-                res.status(200).json(song);
-            }
-            catch (error) {
-                res.status(404).json((0, errorHandler_1.apiErrorHandler)(error, req, res, `Could not  find artist whit id ${req.params.id}`));
-            }
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
         });
-    }
-    deleteSong(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let songService = new SongServices_1.SongServices;
-                const result = yield songService.delete(Number(req.params.id));
-                res.status(200).json(result);
-            }
-            catch (error) {
-                res.status(404).json((0, errorHandler_1.apiErrorHandler)(error, req, res, `Cannot delete the song with id ${req.params.id}`));
-            }
+    });
+};
+const getSongById = (req, res, nextFunction) => {
+    let { id } = req.params;
+    Song_1.default.findById(id)
+        .exec()
+        .then((song) => {
+        return res.status(200).json({
+            song: song
         });
-    }
-}
-exports.default = SongController;
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+};
+const deleteSong = (req, res, nextFunction) => {
+    let { id } = req.params;
+    Song_1.default.findByIdAndDelete(id)
+        .exec()
+        .then(() => {
+        return res.status(200).json({
+            res: `Song with ${id} was deleted`
+        });
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+};
+const updateSong = (req, res, nextFunction) => {
+    let { id } = req.params;
+    const { name, duration, genre, noOfListeners, artistId } = req.body;
+    let updateSong = { id: Number(req.params.id), name: name, duration: Number(duration), genre: genre, noOfListeners: Number(noOfListeners), artistId: artistId };
+    Song_1.default.findByIdAndUpdate(id, updateSong)
+        .exec()
+        .then((song) => {
+        return res.status(200).json({
+            res: song
+        });
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+};
+exports.default = { updateSong, deleteSong, getSongById, getAllSongs, createSong };

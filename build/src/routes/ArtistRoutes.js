@@ -8,15 +8,14 @@ const ArtistController_1 = __importDefault(require("../controllers/ArtistControl
 class ArtistRoutes {
     constructor() {
         this.router = (0, express_1.Router)();
-        this.artistController = new ArtistController_1.default();
         this.initializeRoutes();
     }
     initializeRoutes() {
-        this.router.route('/').get(this.artistController.getAllArtists);
-        this.router.route('/:id').get(this.artistController.getArtistById);
-        this.router.route('/add').post(this.artistController.addNewArtist);
-        this.router.route('/update/:id').put(this.artistController.updateArtist);
-        this.router.route('/delete/:id').delete(this.artistController.deleteArtist);
+        this.router.route('/').get(ArtistController_1.default.getAllArtists);
+        this.router.route('/:id').get(ArtistController_1.default.getArtistById);
+        this.router.route('/add').post(ArtistController_1.default.createArtist);
+        this.router.route('/update/:id').put(ArtistController_1.default.updateArtist);
+        this.router.route('/delete/:id').delete(ArtistController_1.default.deleteArtist);
     }
 }
 exports.default = new ArtistRoutes().router;

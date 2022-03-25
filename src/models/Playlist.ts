@@ -1,20 +1,10 @@
-import { Song } from "./Song";
-import { HasId } from "./HasId";
+import mongoose, { Schema } from 'mongoose';
+import IPlaylist from '../interfaces/Playlist';
 
-/**
- * A playlist
- */
-export interface Playlist extends HasId{
-    /**
-     * Playlist name
-     */
-    name:string;
-    /**
-     * Duration of playlist in minutes
-     */
-    duration:number;
-    /**
-     * The songs which are in this playlist
-     */
-    songs: Song[];
-}
+const PlaylistSchema: Schema = new Schema({
+    name: { type: String, required: true, default: "Empty" },
+    duration: { type: Number, required: true, default: 999 },
+    songs:[ {type: Schema.Types.ObjectId, ref:"Song"}]
+});
+
+export default mongoose.model<IPlaylist>('Playlist', PlaylistSchema);

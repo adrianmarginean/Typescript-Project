@@ -8,15 +8,14 @@ const PlaylistController_1 = __importDefault(require("../controllers/PlaylistCon
 class PlaylistRoutes {
     constructor() {
         this.router = (0, express_1.Router)();
-        this.playlistController = new PlaylistController_1.default();
         this.initializeRoutes();
     }
     initializeRoutes() {
-        this.router.route('/').get(this.playlistController.getAllPlaylists);
-        this.router.route('/:id').get(this.playlistController.getPlaylistById);
-        this.router.route('/add').post(this.playlistController.addNewPlaylist);
-        this.router.route('/update/:id').put(this.playlistController.updatePlaylist);
-        this.router.route('/delete/:id').delete(this.playlistController.deletePlaylist);
+        this.router.route('/').get(PlaylistController_1.default.getAllPlaylists);
+        this.router.route('/:id').get(PlaylistController_1.default.getPlaylistById);
+        this.router.route('/add').post(PlaylistController_1.default.createPlaylist);
+        this.router.route('/update/:id').put(PlaylistController_1.default.updatePlaylist);
+        this.router.route('/delete/:id').delete(PlaylistController_1.default.deletePlaylist);
     }
 }
 exports.default = new PlaylistRoutes().router;

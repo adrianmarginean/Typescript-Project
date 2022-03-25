@@ -1,27 +1,12 @@
-import { HasId } from "./HasId"
+import mongoose, { Schema } from 'mongoose';
+import ISong from '../interfaces/Song';
 
-/**
- * A song
- */
-export interface Song extends HasId{
-    /**
-     * Name
-     */
-    name:string;
-    /**
-     * Duration in seconds
-     */
-    duration:number;
-    /**
-     * Genre
-     */
-    genre:string;
-    /**
-     * Total no. of listeners
-     */
-    noOfListeners:number;
-    /**
-     * The artist who sing the song
-     */
-    artistId?: number;
-}
+const SongSchema: Schema = new Schema({
+    name: { type: String, required: true, default: "Empty" },
+    duration: { type: Number, required: true, default: 999 },
+    genre: { type: String, required: true, default: "Empty" },
+    noOfListeners: { type: String, required: true, default:999},
+    artistId: { type: Schema.Types.ObjectId, ref: "Artist" }
+});
+
+export default mongoose.model<ISong>('Song',SongSchema);

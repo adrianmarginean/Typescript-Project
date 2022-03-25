@@ -1,80 +1,145 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ArtistServices_1 = require("../services/ArtistServices");
-const errorHandler_1 = require("../handlers/errorHandler");
-class ArtistController {
-    constructor() {
-    }
-    getAllArtists(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let artistServices = new ArtistServices_1.ArtistServices();
-                const artistsList = yield artistServices.getAll();
-                res.status(200).json(artistsList);
-            }
-            catch (error) {
-                (0, errorHandler_1.apiErrorHandler)(error, req, res, 'Fetch All Artists failed.');
-            }
+const mongoose_1 = __importDefault(require("mongoose"));
+const Artist_1 = __importDefault(require("../models/Artist"));
+// export default class ArtistController{
+//     constructor(){
+//     }
+//     async getAllArtists(req: Request, res: Response, nextFunction: NextFunction){
+//         try{
+//             let artistServices: ArtistServices= new ArtistServices();
+//             const artistsList:Artist[] =  await artistServices.getAll();
+//             res.status(200).json(artistsList);
+//         }catch(error){
+//             apiErrorHandler(error, req, res, 'Fetch All Artists failed.');
+//         }
+//     }
+//     async getArtistById(req:Request<{id: string}, {}, {}, {}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             let artistServices: ArtistServices= new ArtistServices();
+//             const artist:Artist =  await artistServices.getById(Number(req.params.id));
+//             res.status(200).json(artist);
+//         }catch(error){
+//              res.status(404).json(apiErrorHandler(error, req, res, `Could not  find artist whit id ${req.params.id}`));
+//         }
+//     }
+//     async addNewArtist(req:Request<{}, {}, {name: string, age: number}, {}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             let artistServices: ArtistServices= new ArtistServices();
+//             let newArtist: Artist= {name:req.body.name ,age:Number(req.body.age)};
+//             const artist:Artist = await artistServices.add(newArtist);
+//             res.status(200).json(artist);
+//         }catch(error){
+//             apiErrorHandler(error, req, res, "Cannot add the new artist");
+//         }
+//     }
+//     async updateArtist(req:Request<{id: string}, {}, {name: string, age: number}, {}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             let artistServices: ArtistServices= new ArtistServices();
+//             let updateArtist: Artist = {id:Number(req.params.id),name:req.body.name ,age:Number(req.body.age)};
+//             const artist:Artist = await artistServices.update(updateArtist)
+//             res.status(200).json(artist);
+//         }catch(error){
+//             res.status(404).json(apiErrorHandler(error, req, res, `Cannot update the artist with id ${req.params.id}`));
+//         }
+//     }
+//     async deleteArtist(req:Request<{id: string}, {}, {}, {}>, res: Response, nextFunction: NextFunction){
+//         try{
+//             let artistServices: ArtistServices= new ArtistServices();
+//             const result: boolean = await artistServices.delete(Number(req.params.id));
+//             res.status(200).json(result)
+//         }catch(error){
+//             res.status(404).json(apiErrorHandler(error, req, res, `Cannot delete the artist with id ${req.params.id}`));
+//         }
+//     }
+// }
+const createArtist = (req, res, nextFunction) => {
+    let { name, age } = req.body;
+    const artist = new Artist_1.default({
+        _id: new mongoose_1.default.Types.ObjectId(),
+        name,
+        age
+    });
+    return artist
+        .save()
+        .then((result) => {
+        return res.status(201).json({
+            artist: result
         });
-    }
-    getArtistById(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let artistServices = new ArtistServices_1.ArtistServices();
-                const artist = yield artistServices.getById(Number(req.params.id));
-                res.status(200).json(artist);
-            }
-            catch (error) {
-                res.status(404).json((0, errorHandler_1.apiErrorHandler)(error, req, res, `Could not  find artist whit id ${req.params.id}`));
-            }
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
         });
-    }
-    addNewArtist(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let artistServices = new ArtistServices_1.ArtistServices();
-                let newArtist = { name: req.body.name, age: Number(req.body.age) };
-                const artist = yield artistServices.add(newArtist);
-                res.status(200).json(artist);
-            }
-            catch (error) {
-                (0, errorHandler_1.apiErrorHandler)(error, req, res, "Cannot add the new artist");
-            }
+    });
+};
+const getAllArtists = (req, res, next) => {
+    Artist_1.default.find()
+        .exec()
+        .then((artists) => {
+        return res.status(200).json({
+            artists: artists,
+            count: artists.length
         });
-    }
-    updateArtist(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let artistServices = new ArtistServices_1.ArtistServices();
-                let updateArtist = { id: Number(req.params.id), name: req.body.name, age: Number(req.body.age) };
-                const artist = yield artistServices.update(updateArtist);
-                res.status(200).json(artist);
-            }
-            catch (error) {
-                res.status(404).json((0, errorHandler_1.apiErrorHandler)(error, req, res, `Cannot update the artist with id ${req.params.id}`));
-            }
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
         });
-    }
-    deleteArtist(req, res, nextFunction) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let artistServices = new ArtistServices_1.ArtistServices();
-                const result = yield artistServices.delete(Number(req.params.id));
-                res.status(200).json(result);
-            }
-            catch (error) {
-                res.status(404).json((0, errorHandler_1.apiErrorHandler)(error, req, res, `Cannot delete the artist with id ${req.params.id}`));
-            }
+    });
+};
+const getArtistById = (req, res, nextFunction) => {
+    let { id } = req.params;
+    Artist_1.default.findById(id)
+        .exec()
+        .then((artist) => {
+        return res.status(200).json({
+            artist: artist
         });
-    }
-}
-exports.default = ArtistController;
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+};
+const deleteArtist = (req, res, nextFunction) => {
+    let { id } = req.params;
+    Artist_1.default.findByIdAndDelete(id)
+        .exec()
+        .then(() => {
+        return res.status(200).json({
+            res: `Artist with ${id} was deleted`
+        });
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+};
+const updateArtist = (req, res, nextFunction) => {
+    let { id } = req.params;
+    let updateArtist = { name: req.body.name, age: Number(req.body.age) };
+    Artist_1.default.findByIdAndUpdate(id, updateArtist)
+        .exec()
+        .then((artist) => {
+        return res.status(200).json({
+            res: artist
+        });
+    })
+        .catch((error) => {
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+};
+exports.default = { createArtist, getAllArtists, getArtistById, updateArtist, deleteArtist };
