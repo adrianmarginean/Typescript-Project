@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ArtistRoutes_1 = __importDefault(require("./ArtistRoutes"));
 const PlaylistRoutes_1 = __importDefault(require("./PlaylistRoutes"));
 const SongRoutes_1 = __importDefault(require("./SongRoutes"));
+const UserRoutes_1 = __importDefault(require("./UserRoutes"));
 class Routes {
     constructor(app) {
         //artist routes
@@ -14,6 +15,8 @@ class Routes {
         app.use('/api/songs', SongRoutes_1.default);
         //playlist routes
         app.use('/api/playlists', PlaylistRoutes_1.default);
+        //user routes
+        app.use('/api/user', UserRoutes_1.default);
     }
 }
 exports.default = Routes;

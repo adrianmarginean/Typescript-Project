@@ -2,6 +2,7 @@ import { Application } from "express";
 import artistRoutes from "./ArtistRoutes";
 import playlistRoutes from "./PlaylistRoutes";
 import songRoutes from "./SongRoutes";
+import UserRoutes from "./UserRoutes";
 
 export default class Routes{
 
@@ -12,6 +13,8 @@ export default class Routes{
         app.use('/api/songs', songRoutes)
         //playlist routes
         app.use('/api/playlists', playlistRoutes)
+        //user routes
+        app.use('/api/user', UserRoutes)
     }
 
 }
