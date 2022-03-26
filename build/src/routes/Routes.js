@@ -17,6 +17,10 @@ class Routes {
         app.use('/api/playlists', PlaylistRoutes_1.default);
         //user routes
         app.use('/api/user', UserRoutes_1.default);
+        //default
+        app.use('/', (req, res) => {
+            res.send("hello");
+        });
     }
 }
 exports.default = Routes;
